@@ -2,8 +2,13 @@ import { NextResponse } from 'next/server';
 import { getPacienteById, updatePacienteTriagem } from '@/lib/db';
 import { triagemSchema } from '@/lib/validators';
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
-  const paciente = await getPacienteById(params.id);
+type RouteParams = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(_: Request, { params }: RouteParams) {
+  const { id } = await params;
+  const paciente = await getPacienteById(id);
 
   if (!paciente) {
     return NextResponse.json({ error: 'Paciente não encontrado.' }, { status: 404 });
@@ -12,7 +17,8 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
   return NextResponse.json(paciente);
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: RouteParams) {
+  const { id } = await params;
   const body = await request.json();
   const parsed = triagemSchema.safeParse(body);
 
@@ -23,7 +29,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     );
   }
 
-  const updated = await updatePacienteTriagem(params.id, parsed.data);
+  const updated = await updatePacienteTriagem(id, parsed.data);
 
   if (!updated) {
     return NextResponse.json({ error: 'Paciente não encontrado.' }, { status: 404 });

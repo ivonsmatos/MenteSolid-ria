@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { TriagemForm } from '@/components/TriagemForm';
 import { Paciente } from '@/types';
 
-export default function PacienteDetalhePage({ params }: { params: { id: string } }) {
+export default function PacienteDetalhePage() {
+  const params = useParams<{ id: string }>();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const loadPaciente = async () => {
+  const loadPaciente = useCallback(async () => {
     setLoading(true);
     const response = await fetch(`/api/pacientes/${params.id}`);
 
@@ -21,11 +23,11 @@ export default function PacienteDetalhePage({ params }: { params: { id: string }
     const data = (await response.json()) as Paciente;
     setPaciente(data);
     setLoading(false);
-  };
+  }, [params.id]);
 
   useEffect(() => {
     void loadPaciente();
-  }, [params.id]);
+  }, [loadPaciente]);
 
   if (loading) {
     return <p>Carregando...</p>;

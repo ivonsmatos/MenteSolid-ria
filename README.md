@@ -2,7 +2,7 @@
 
 Plataforma digital progressiva de impacto social para conectar pessoas em vulnerabilidade socioeconômica a acolhimento inicial e encaminhamento para profissionais voluntários de saúde mental.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-06B6D4)
 ![Supabase Ready](https://img.shields.io/badge/Supabase-ready-3ECF8E)
