@@ -93,7 +93,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Download artefato estático
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.3
         with:
           name: cf-pages-output
           path: .vercel/output/static
@@ -119,7 +119,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Download artefato estático
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.3
         with:
           name: cf-pages-output
           path: .vercel/output/static
