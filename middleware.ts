@@ -33,9 +33,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith('/profissionais') && token.perfil === 'profissional') {
+  if (pathname.startsWith('/profissionais') && token.perfil === 'paciente') {
     const url = request.nextUrl.clone();
-    url.pathname = '/dashboard/profissional';
+    url.pathname = '/dashboard/paciente';
     return NextResponse.redirect(url);
   }
 
