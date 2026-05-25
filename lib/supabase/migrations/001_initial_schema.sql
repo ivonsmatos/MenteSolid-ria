@@ -70,10 +70,25 @@ alter table public.encaminhamentos enable row level security;
 alter table public.consentimentos_lgpd enable row level security;
 alter table public.audit_log enable row level security;
 
+create policy "profissionais_publico_ler"
+on public.profissionais
+for select
+using (true);
+
+create policy "profissionais_publico_criar"
+on public.profissionais
+for insert
+with check (true);
+
 create policy "profissional_ler_proprios_pacientes"
 on public.pacientes
 for select
 using (profissional_id::text = auth.uid()::text);
+
+create policy "pacientes_publico_criar"
+on public.pacientes
+for insert
+with check (true);
 
 create policy "profissional_atualizar_proprios_pacientes"
 on public.pacientes
@@ -111,6 +126,11 @@ on public.encaminhamentos
 for update
 using (profissional_destino_id::text = auth.uid()::text)
 with check (profissional_destino_id::text = auth.uid()::text);
+
+create policy "encaminhamentos_publico_criar"
+on public.encaminhamentos
+for insert
+with check (true);
 
 create policy "paciente_ler_seus_consentimentos"
 on public.consentimentos_lgpd
