@@ -25,7 +25,11 @@ export async function registrarAcesso(params: RegistroAcessoParams): Promise<voi
     return;
   }
 
-  await supabaseAdmin.from('audit_log').insert(payload);
+  const { error } = await supabaseAdmin.from('audit_log').insert(payload);
+
+  if (error) {
+    throw error;
+  }
 }
 
 export async function listarAcessos(recursoId: string, recurso: string) {
