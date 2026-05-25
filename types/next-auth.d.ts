@@ -15,6 +15,7 @@ declare module 'next-auth' {
   interface User {
     perfil?: 'paciente' | 'profissional';
     crp_crm?: string;
+    supabaseAccessToken?: string;
   }
 }
 
@@ -24,5 +25,6 @@ declare module 'next-auth/jwt' {
     nome?: string;
     perfil?: 'paciente' | 'profissional';
     crp_crm?: string;
+    supabaseAccessToken?: string;
   }
 }

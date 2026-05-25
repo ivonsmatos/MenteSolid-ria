@@ -76,13 +76,15 @@ export const authOptions: NextAuthOptions = {
           email,
           name: perfil.nome ?? data.user.user_metadata?.name ?? email,
           perfil: perfil.perfil,
-          crp_crm: perfil.crp_crm
+          crp_crm: perfil.crp_crm,
+          supabaseAccessToken: data.session?.access_token
         } as {
           id: string;
           email: string;
           name: string;
           perfil?: PerfilUsuario;
           crp_crm?: string;
+          supabaseAccessToken?: string;
         };
       }
     }),
@@ -103,6 +105,7 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email ?? undefined;
         token.perfil = (user as { perfil?: PerfilUsuario }).perfil;
         token.crp_crm = (user as { crp_crm?: string }).crp_crm;
+        token.supabaseAccessToken = (user as { supabaseAccessToken?: string }).supabaseAccessToken;
       }
 
       if (token.email && (!token.perfil || !token.id)) {
