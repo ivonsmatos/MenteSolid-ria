@@ -1,59 +1,40 @@
-# Arquitetura do Software — MenteSolidária (MVP)
+# Arquitetura do Software — MenteSolidária
 
-## 1. Arquitetura escolhida
-Aplicação monolítica em Next.js (App Router), com páginas e API Routes no mesmo projeto para acelerar entrega do MVP.
+## Visão geral
 
-## 2. Estrutura de arquivos
-```text
-mentesolidaria/
-├── app/
-│   ├── layout.tsx
-│   ├── page.tsx
-│   ├── pacientes/
-│   │   ├── page.tsx
-│   │   ├── novo/page.tsx
-│   │   └── [id]/page.tsx
-│   ├── profissionais/
-│   │   ├── page.tsx
-│   │   └── novo/page.tsx
-│   └── api/
-│       ├── pacientes/route.ts
-│       ├── pacientes/[id]/route.ts
-│       └── profissionais/route.ts
-├── components/
-│   ├── PacienteForm.tsx
-│   ├── ProfissionalForm.tsx
-│   ├── TriagemForm.tsx
-│   └── AlertaPrioridade.tsx
-├── lib/
-│   ├── db.ts
-│   ├── validators.ts
-│   └── groq-tools.ts
-├── types/
-│   └── index.ts
-├── docs/
-│   ├── requisitos.md
-│   └── arquitetura.md
-├── data/
-│   └── db.json
-└── README.md
+A aplicação utiliza Next.js 15 (App Router), TypeScript estrito e separação por camadas para manter escalabilidade, segurança e compliance LGPD.
+
+```mermaid
+flowchart LR
+  U[Usuário] --> N[Next.js App Router]
+  N --> A[NextAuth]
+  A --> R[API Routes]
+  R --> S[Supabase com RLS]
+  R --> M[Medplum FHIR]
+  R --> G[Groq]
+  R --> C[Cal.com]
 ```
 
-## 3. Bibliotecas utilizadas
-- Next.js + React + TypeScript para UI e rotas.
-- Tailwind CSS para estilização.
-- React Hook Form + Zod para validação de formulários.
-- `uuid` para IDs únicos.
-- `lucide-react` para ícones.
+## Camadas
 
-## 4. Armazenamento de dados
-- MVP usa `data/db.json` como persistência local.
-- Leitura/escrita feita em `lib/db.ts` via `fs/promises` com caminho absoluto baseado em `process.cwd()`.
-- Estrutura de dados preparada para futura migração para Supabase.
+- **Apresentação**: páginas em `app/` e componentes em `components/`.
+- **API Routes**: entrada server-side com validação, autenticação e respostas JSON padronizadas.
+- **Serviços (`lib/`)**:
+  - `lib/auth`: autenticação e guards.
+  - `lib/supabase`: acesso a dados e políticas de persistência com fallback para `db.json`.
+  - `lib/lgpd`: consentimento e versionamento de termos.
+  - `lib/groq`: acolhimento e triagem assistida por IA.
+  - `lib/calcom`: disponibilidade e agendamentos.
+  - `lib/notificacoes`: envio de e-mail e WhatsApp.
+  - `lib/audit`: logging de acesso.
+- **Persistência**:
+  - Primária: Supabase (RLS).
+  - Fallback MVP: `data/db.json` quando `USE_SUPABASE=false`.
 
-## 5. Fluxo da aplicação
-1. Usuário acessa páginas de pacientes/profissionais.
-2. Formulários enviam dados para API Routes (`POST`).
-3. API valida com Zod e aplica regras de negócio (ex.: email único de paciente).
-4. Camada `lib/db.ts` persiste dados em `data/db.json`.
-5. Tela de detalhe de paciente salva triagem (`PATCH`) e exibe alerta visual para casos prioritários.
+## Fluxo de dados principal
+
+1. Usuário autentica via NextAuth (Credentials/Google).
+2. API Route valida sessão e perfil.
+3. Dados operacionais são processados em serviços (`lib/*`).
+4. Persistência ocorre no Supabase com RLS (ou fallback local para MVP).
+5. Dados clínicos estruturados seguem integração FHIR via Medplum.

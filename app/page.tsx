@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ChatAcolhimento } from '@/components/acolhimento/ChatAcolhimento';
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
           <p className="mt-2 text-slate-600">Gerencie especialistas parceiros para encaminhamento seguro.</p>
         </Link>
       </div>
+      <ChatAcolhimento />
     </section>
   );
 }

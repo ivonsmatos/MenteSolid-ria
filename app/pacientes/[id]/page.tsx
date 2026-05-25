@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { HistoricoAcessos } from '@/components/audit/HistoricoAcessos';
 import { TriagemForm } from '@/components/TriagemForm';
 import { Paciente } from '@/types';
 
@@ -62,6 +63,8 @@ export default function PacienteDetalhePage() {
           <p className="text-sm text-slate-700">Sinal de alerta: {paciente.triagem.sinalDeAlerta ? 'Sim' : 'Não'}</p>
         </div>
       ) : null}
+
+      <HistoricoAcessos recurso="paciente" recursoId={paciente.id} />
     </section>
   );
 }
