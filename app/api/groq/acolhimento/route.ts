@@ -1,12 +1,25 @@
-import { getServerSession } from '@/lib/auth/config';
-import { requireAuth } from '@/lib/auth/guards';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest } from 'next/server';
+import {
+  cacheGet,
+  cachePut,
+  isGroqRespostaNaoSensivelCacheavel
+} from '@/lib/cloudflare/cache';
 import { gerarRespostaAcolhimento } from '@/lib/groq/acolhimento';
 import { respostaErro } from '@/lib/http/json';
 
-export async function POST(request: Request): Promise<Response> {
+export const runtime = 'edge';
+
+export async function POST(request: NextRequest): Promise<Response> {
   try {
-    const session = await getServerSession();
-    requireAuth(session);
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET
+    });
+
+    if (!token?.id) {
+      return respostaErro(401, 'Usuário não autenticado.');
+    }
 
     const body = (await request.json()) as {
       mensagem?: string;
@@ -17,7 +30,16 @@ export async function POST(request: Request): Promise<Response> {
       return respostaErro(400, 'Campo mensagem é obrigatório.');
     }
 
-    const resultado = await gerarRespostaAcolhimento(body.mensagem, body.historico ?? []);
+    const historico = body.historico ?? [];
+    const cacheavel = isGroqRespostaNaoSensivelCacheavel(body.mensagem, historico.length);
+    const cacheKey = `groq:acolhimento:publico:${body.mensagem}`;
+    const resultadoEmCache = cacheavel
+      ? await cacheGet<{ resposta: string; alertaCVV: boolean; dadosTriagem: unknown }>(cacheKey)
+      : null;
+    const resultado = resultadoEmCache ?? (await gerarRespostaAcolhimento(body.mensagem, historico));
+    if (cacheavel && !resultadoEmCache) {
+      await cachePut(cacheKey, resultado, 300);
+    }
 
     const encoder = new TextEncoder();
     const payload = JSON.stringify(resultado);
@@ -35,11 +57,7 @@ export async function POST(request: Request): Promise<Response> {
         'Cache-Control': 'no-store'
       }
     });
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('não autenticado')) {
-      return respostaErro(401, 'Usuário não autenticado.');
-    }
-
+  } catch {
     return respostaErro(500, 'Falha ao processar acolhimento.');
   }
 }

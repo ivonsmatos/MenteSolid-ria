@@ -10,6 +10,7 @@ Plataforma digital de impacto social para conectar pessoas em vulnerabilidade so
 ![Cal.com](https://img.shields.io/badge/Cal.com-v2-111827)
 ![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18)
 ![Medplum FHIR](https://img.shields.io/badge/Medplum-FHIR-5A2DFF)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages%20%2B%20Workers-F38020)
 
 ## Stack tecnológica
 
@@ -65,7 +66,21 @@ npm run build
 npm run test
 npm run test:ui
 npm run test:coverage
+npm run pages:build
+npm run deploy
 ```
+
+## Deploy
+
+Deploy oficial em Cloudflare Pages + Workers:
+
+```bash
+npm run pages:build
+npm run deploy
+```
+
+Workflow de CI/CD: `.github/workflows/deploy-cloudflare.yml`.
+Guia completo: `docs/deploy-cloudflare.md`.
 
 ## Roadmap
 
@@ -78,6 +93,7 @@ npm run test:coverage
 - [x] Dashboard profissional inicial
 - [x] Audit log de acesso
 - [x] Base de testes com Vitest
+- [x] Deploy em Cloudflare Pages + Workers
 - [ ] Evoluir cobertura de testes E2E e hardening de produção
 
 ## Documentação adicional
@@ -85,3 +101,4 @@ npm run test:coverage
 - `docs/arquitetura.md`
 - `docs/medplum-integracao.md`
 - `docs/lgpd-compliance.md`
+- `docs/deploy-cloudflare.md`
