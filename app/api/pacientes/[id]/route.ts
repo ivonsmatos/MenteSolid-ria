@@ -3,7 +3,8 @@ import { getPacienteById, updatePacienteTriagem } from '@/lib/db';
 import { comAudit } from '@/lib/audit/middleware';
 import { USE_SUPABASE } from '@/lib/env';
 import { respostaErro } from '@/lib/http/json';
-import { atualizarPaciente, buscarPaciente } from '@/lib/supabase/pacientes';
+import { buscarPaciente } from '@/lib/supabase/pacientes';
+import { criarTriagem } from '@/lib/supabase/triagens';
 import { triagemSchema } from '@/lib/validators';
 
 type RouteParams = {
@@ -39,6 +40,7 @@ async function patchPacienteHandler(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
     const body = await request.json();
+    const profissionalId: string = (body as { profissional_id?: string }).profissional_id ?? '';
     const parsed = triagemSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -55,15 +57,16 @@ async function patchPacienteHandler(request: Request, { params }: RouteParams) {
       return NextResponse.json(updated);
     }
 
-    const updated = await atualizarPaciente(id, {
-      vulnerabilidade_socioeconomica: parsed.data.sinalDeAlerta
+    const triagem = await criarTriagem({
+      paciente_id: id,
+      profissional_id: profissionalId,
+      nivel_prioridade: parsed.data.perfilIndicado,
+      alerta_cvv: parsed.data.sinalDeAlerta,
+      sintomas: parsed.data.sintomasRelatados,
+      observacoes: parsed.data.resumoClinicoParaEspecialista
     });
 
-    if (!updated) {
-      return respostaErro(404, 'Paciente não encontrado.');
-    }
-
-    return NextResponse.json(updated);
+    return NextResponse.json(triagem);
   } catch {
     return respostaErro(500, 'Falha ao atualizar paciente.');
   }
