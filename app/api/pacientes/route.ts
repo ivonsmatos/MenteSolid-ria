@@ -38,16 +38,16 @@ export async function POST(request: Request) {
       return respostaErro(400, 'Dados inválidos.', parsed.error.flatten().fieldErrors);
     }
 
-    const pacientesExistentes = await getPacientes();
-    const emailExists = pacientesExistentes.some(
-      (paciente) => paciente.email.toLowerCase() === parsed.data.email.toLowerCase()
-    );
-
-    if (emailExists && !USE_SUPABASE) {
-      return respostaErro(409, 'E-mail já cadastrado para outro paciente.');
-    }
-
     if (!USE_SUPABASE) {
+      const pacientesExistentes = await getPacientes();
+      const emailExists = pacientesExistentes.some(
+        (paciente) => paciente.email.toLowerCase() === parsed.data.email.toLowerCase()
+      );
+
+      if (emailExists) {
+        return respostaErro(409, 'E-mail já cadastrado para outro paciente.');
+      }
+
       const novoPaciente = await createPaciente(parsed.data);
       return NextResponse.json(novoPaciente, { status: 201 });
     }
