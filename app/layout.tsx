@@ -17,6 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               🧠 MenteSolidária
             </Link>
             <div className="flex gap-4 text-sm font-medium">
+              <Link href="/login">Login</Link>
+              <Link href="/dashboard/profissional">Dashboard</Link>
               <Link href="/pacientes">Pacientes</Link>
               <Link href="/profissionais">Profissionais</Link>
             </div>
