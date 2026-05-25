@@ -3,6 +3,8 @@ import {
   emailConfirmacaoPaciente,
   emailNovoEncaminhamento
 } from '@/lib/notificacoes/email';
+import { getServerSession } from '@/lib/auth/config';
+import { requireAuth } from '@/lib/auth/guards';
 import { notificarProfissional } from '@/lib/notificacoes/whatsapp';
 import { respostaErro } from '@/lib/http/json';
 
@@ -10,6 +12,9 @@ type TipoNotificacao = 'novo_encaminhamento' | 'confirmacao_agendamento' | 'aler
 
 export async function POST(request: Request): Promise<Response> {
   try {
+    const session = await getServerSession();
+    requireAuth(session);
+
     const body = (await request.json()) as {
       tipo?: TipoNotificacao;
       payload?: Record<string, unknown>;
@@ -79,7 +84,11 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     return respostaErro(400, 'Tipo de notificação inválido.');
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('não autenticado')) {
+      return respostaErro(401, 'Usuário não autenticado.');
+    }
+
     return respostaErro(500, 'Falha ao processar notificação.');
   }
 }
