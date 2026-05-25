@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import { ChatAcolhimento } from '@/components/acolhimento/ChatAcolhimento';
+import { getServerSession } from '@/lib/auth/config';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await getServerSession();
+
   return (
     <section className="space-y-6">
       <h1 className="text-3xl font-bold text-slate-900">Plataforma de acolhimento em saúde mental gratuita</h1>
@@ -19,7 +22,7 @@ export default function HomePage() {
           <p className="mt-2 text-slate-600">Gerencie especialistas parceiros para encaminhamento seguro.</p>
         </Link>
       </div>
-      <ChatAcolhimento />
+      {session ? <ChatAcolhimento /> : null}
     </section>
   );
 }
