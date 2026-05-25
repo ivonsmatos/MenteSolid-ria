@@ -3,7 +3,12 @@ import {
   cancelarAgendamento,
   criarAgendamento
 } from '@/lib/calcom/agendamento';
+import { cacheGet, cachePut } from '@/lib/cloudflare/cache';
 import { respostaErro } from '@/lib/http/json';
+
+export const runtime = 'edge';
+
+const TTL_CACHE_DISPONIBILIDADE = 180;
 
 export async function GET(request: Request): Promise<Response> {
   try {
@@ -17,8 +22,15 @@ export async function GET(request: Request): Promise<Response> {
 
     const inicio = new Date(`${data}T00:00:00.000Z`).toISOString();
     const fim = new Date(`${data}T23:59:59.999Z`).toISOString();
+    const chaveCache = `calcom:disponibilidade:${profissionalId}:${data}`;
+    const cacheDisponibilidade = await cacheGet<unknown[]>(chaveCache);
+
+    if (cacheDisponibilidade) {
+      return Response.json(cacheDisponibilidade);
+    }
 
     const slots = await buscarDisponibilidade(profissionalId, inicio, fim);
+    await cachePut(chaveCache, slots, TTL_CACHE_DISPONIBILIDADE);
     return Response.json(slots);
   } catch {
     return respostaErro(500, 'Falha ao buscar disponibilidade.');

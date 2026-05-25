@@ -1,5 +1,6 @@
 node_modules
 .next
+.vercel
 out
 npm-debug.log*
 .DS_Store

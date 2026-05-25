@@ -23,6 +23,7 @@ Plataforma digital de impacto social para conectar pessoas em vulnerabilidade so
 - [Cal.com](https://cal.com/) para agendamento
 - [Medplum](https://www.medplum.com/) para camada clínica FHIR
 - [Vitest](https://vitest.dev/) para testes unitários
+- Deploy em [Cloudflare Pages + Workers](https://developers.cloudflare.com/pages/)
 
 ## Instalação
 
@@ -62,10 +63,26 @@ USE_SUPABASE=false
 ```bash
 npm run dev
 npm run build
+npm run pages:build
+npm run deploy
+npm run deploy:preview
 npm run test
 npm run test:ui
 npm run test:coverage
 ```
+
+## Deploy
+
+Este projeto está configurado para deploy no **Cloudflare Pages + Workers** com `@cloudflare/next-on-pages`.
+
+Passo rápido:
+
+```bash
+npm run pages:build
+npm run deploy
+```
+
+Documentação completa: `docs/deploy-cloudflare.md`.
 
 ## Roadmap
 
@@ -78,6 +95,7 @@ npm run test:coverage
 - [x] Dashboard profissional inicial
 - [x] Audit log de acesso
 - [x] Base de testes com Vitest
+- [x] Deploy em Cloudflare Pages + Workers
 - [ ] Evoluir cobertura de testes E2E e hardening de produção
 
 ## Documentação adicional
@@ -85,3 +103,4 @@ npm run test:coverage
 - `docs/arquitetura.md`
 - `docs/medplum-integracao.md`
 - `docs/lgpd-compliance.md`
+- `docs/deploy-cloudflare.md`

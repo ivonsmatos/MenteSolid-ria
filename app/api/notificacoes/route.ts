@@ -8,6 +8,8 @@ import { respostaErro } from '@/lib/http/json';
 
 type TipoNotificacao = 'novo_encaminhamento' | 'confirmacao_agendamento' | 'alerta_cvv';
 
+export const runtime = 'edge';
+
 export async function POST(request: Request): Promise<Response> {
   try {
     const body = (await request.json()) as {
