@@ -11,3 +11,6 @@ npm-debug.log*
 
 # Dev-only local DB (não enviar dados reais)
 data/db.json
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
