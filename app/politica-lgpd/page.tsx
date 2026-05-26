@@ -18,7 +18,7 @@ export default function PoliticaLgpdPage() {
       </header>
       <p className="whitespace-pre-line text-slate-800">{TERMO_LGPD_RESUMO}</p>
       <ul className="list-disc space-y-2 pl-6 text-slate-800">
-        <li><strong>Base legal:</strong> tutela da saúde (LGPD Art. 11, II, "f").</li>
+        <li><strong>Base legal:</strong> tutela da saúde (LGPD Art. 11, II, alínea f).</li>
         <li><strong>Acesso:</strong> profissionais autenticados e equipe administrativa.</li>
         <li><strong>Retenção:</strong> enquanto o cadastro estiver ativo e enquanto exigido por lei.</li>
         <li><strong>Direitos:</strong> acesso, correção, anonimização, portabilidade, eliminação e revogação de consentimento.</li>
