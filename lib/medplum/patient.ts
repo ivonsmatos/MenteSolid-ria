@@ -73,7 +73,7 @@ export function toFhirPatient(localPatient: LocalPatient): Patient {
           }
         ]
       : undefined,
-    birthDate: localPatient.dataNascimento,
+    birthDate: localPatient.dataNascimento ?? undefined,
     gender: mapGeneroToFhir(localPatient.genero),
     telecom: [
       ...(localPatient.telefone
