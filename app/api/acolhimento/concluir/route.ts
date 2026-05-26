@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+
+export const runtime = 'edge';
+
 import { TERMO_LGPD_VERSAO } from '@/lib/lgpd';
 import { pacientePublicoCadastroSchema, triagemSchema } from '@/lib/validators';
 

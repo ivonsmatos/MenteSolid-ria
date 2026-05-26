@@ -1,15 +1,28 @@
-# Renomeie para wrangler.toml e ajuste com seus valores reais.
-# Em seguida: `npx wrangler pages deploy .vercel/output/static` (após `next build`)
-# ou use a integração GitHub do Cloudflare Pages.
+# =========================================================================
+# wrangler.toml — Cloudflare Pages (Next.js via @cloudflare/next-on-pages)
+# Renomeie para `wrangler.toml`, ajuste e nunca comite com segredos.
+# =========================================================================
 
 name = "mentesolidaria"
 compatibility_date = "2026-05-01"
+# nodejs_compat habilita Buffer, process, EventEmitter e outros polyfills
+# que algumas libs (Supabase, Medplum) podem precisar em runtime edge.
 compatibility_flags = ["nodejs_compat"]
 
-# Pages Functions inferidas automaticamente do output do Next no Cloudflare.
-# Defina as variáveis sensíveis no painel Cloudflare → Settings → Environment variables.
+# Pages só precisa do diretório de saída do adapter @cloudflare/next-on-pages.
+pages_build_output_dir = ".vercel/output/static"
 
+# Variáveis públicas (cliente). NÃO coloque chaves aqui — use o painel
+# Cloudflare → Settings → Environment variables (com toggle "Encrypt").
 [vars]
-NEXT_PUBLIC_APP_URL = "https://mentesolidaria.example"
-DIRETORIO_PROVIDER = "json"
-GROQ_MODEL = "llama-3.3-70b-versatile"
+NEXT_PUBLIC_APP_URL          = "https://mentesolidaria.example"
+NEXT_PUBLIC_MEDPLUM_BASE_URL = "https://api.medplum.com/"
+DIRETORIO_PROVIDER           = "json"
+GROQ_MODEL                   = "llama-3.3-70b-versatile"
+GROQ_BASE_URL                = "https://api.groq.com/openai/v1"
+
+# Segredos (encrypt no painel):
+#   NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY,
+#   SUPABASE_SERVICE_ROLE_KEY, MEDPLUM_CLIENT_ID, MEDPLUM_CLIENT_SECRET,
+#   GROQ_API_KEY, STRIPE_SECRET_KEY, STRIPE_PRICE_ID, STRIPE_WEBHOOK_SECRET,
+#   SANITY_PROJECT_ID, SANITY_TOKEN

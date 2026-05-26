@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { AuthError, getSupabaseServer, requirePapel } from '@/lib/supabase/server';
+
+export const runtime = 'edge';
+
 import { profissionalSchema } from '@/lib/validators';
 import { profissionalFromRow } from '@/lib/mappers';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';

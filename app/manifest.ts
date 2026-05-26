@@ -12,21 +12,11 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',
-    background_color: '#f8fafc',
-    theme_color: '#1d4ed8',
+    background_color: '#FFFFFA',
+    theme_color: '#C22251',
     icons: [
-      {
-        src: '/icon.svg',
-        sizes: 'any',
-        type: 'image/svg+xml',
-        purpose: 'any'
-      },
-      {
-        src: '/icon-maskable.svg',
-        sizes: 'any',
-        type: 'image/svg+xml',
-        purpose: 'maskable'
-      }
+      { src: '/icon.svg',          sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+      { src: '/icon-maskable.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' }
     ],
     categories: ['health', 'medical', 'social']
   };

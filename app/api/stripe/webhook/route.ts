@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { isStripeConfigured, validarWebhook } from '@/lib/stripe';
+
+export const runtime = 'edge';
+
 import { captureError, logInfo } from '@/lib/observability';
 
 // Webhook é PÚBLICO mas valida assinatura via Stripe. NÃO requer auth Supabase.

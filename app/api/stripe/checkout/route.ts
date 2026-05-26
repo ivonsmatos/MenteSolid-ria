@@ -5,6 +5,9 @@ import {
   getSupabaseServer,
   requirePapel
 } from '@/lib/supabase/server';
+
+export const runtime = 'edge';
+
 import { isStripeConfigured, criarCheckoutSession } from '@/lib/stripe';
 import { captureError } from '@/lib/observability';
 

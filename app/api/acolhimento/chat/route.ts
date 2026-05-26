@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { chatCompletion, GroqError, type ChatMessage } from '@/lib/groq/client';
+
+export const runtime = 'edge';
+
 import { SYSTEM_PROMPT_ACOLHIMENTO } from '@/lib/groq/prompt';
 import { detectarRisco, MENSAGEM_EMERGENCIA_CVV } from '@/lib/groq/risco';
 import { TRIAGEM_TOOL, parseTriagemArgs, type TriagemFunctionArgs } from '@/lib/groq/tools';

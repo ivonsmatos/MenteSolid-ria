@@ -10,17 +10,17 @@ type Props = {
 
 export function ConsentimentoLGPD({ register, errors }: Props) {
   return (
-    <div className="rounded border border-slate-300 bg-slate-50 p-4">
+    <div className="rounded-2xl border border-mint-200 bg-mint-50 p-4">
       <label className="flex items-start gap-3 text-sm" htmlFor="consentimento-lgpd">
         <input
-          className="mt-1"
+          className="mt-1 h-4 w-4 accent-coral"
           id="consentimento-lgpd"
           type="checkbox"
           {...register('consentimentoLgpd')}
         />
         <span>
           Li e aceito a{' '}
-          <Link className="text-blue-700 underline" href="/politica-lgpd" target="_blank">
+          <Link className="font-semibold text-coral underline" href="/politica-lgpd" target="_blank">
             política de privacidade e tratamento de dados (LGPD)
           </Link>{' '}
           do MenteSolidária — versão {TERMO_LGPD_VERSAO}. Autorizo o tratamento dos meus
@@ -29,7 +29,7 @@ export function ConsentimentoLGPD({ register, errors }: Props) {
         </span>
       </label>
       {errors.consentimentoLgpd ? (
-        <p className="mt-2 text-sm text-red-600">
+        <p className="mt-2 text-sm text-coral-500">
           {errors.consentimentoLgpd.message as string}
         </p>
       ) : null}

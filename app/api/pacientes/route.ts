@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { AuthError, getSupabaseServer, requirePapel } from '@/lib/supabase/server';
+
+export const runtime = 'edge';
+
 import { pacienteSchema } from '@/lib/validators';
 import { pacienteFromRow } from '@/lib/mappers';
 

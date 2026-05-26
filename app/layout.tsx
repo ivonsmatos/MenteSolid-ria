@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { CVVBanner } from '@/components/CVVBanner';
 import { HeaderNav } from '@/components/HeaderNav';
+import { Footer } from '@/components/Footer';
 import { JsonLd } from '@/components/JsonLd';
 import { SITE_DESCRIPTION_LONG, SITE_NAME, SITE_TAGLINE, getSiteUrl } from '@/lib/seo';
 
@@ -18,8 +19,10 @@ export const metadata: Metadata = {
     'saúde mental gratuita',
     'psicólogo voluntário',
     'acolhimento psicológico',
+    'apoio emocional',
     'CVV 188',
     'CAPS',
+    'clínica-escola',
     'LGPD',
     'Brasil'
   ],
@@ -42,7 +45,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#1d4ed8',
+  themeColor: '#C22251',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover'
@@ -54,10 +57,14 @@ const organizationJsonLd = {
   name: SITE_NAME,
   description: SITE_DESCRIPTION_LONG,
   url: getSiteUrl(),
+  logo: `${getSiteUrl()}/icon.svg`,
   areaServed: { '@type': 'Country', name: 'Brasil' },
   knowsLanguage: 'pt-BR',
   medicalSpecialty: ['Psychiatric', 'Psychological'],
   isAcceptingNewPatients: true,
+  sameAs: [
+    // Atualize quando publicarmos perfis sociais oficiais.
+  ],
   potentialAction: {
     '@type': 'RegisterAction',
     target: `${getSiteUrl()}/cadastro-paciente`,
@@ -70,7 +77,12 @@ const websiteJsonLd = {
   '@type': 'WebSite',
   name: SITE_NAME,
   url: getSiteUrl(),
-  inLanguage: 'pt-BR'
+  inLanguage: 'pt-BR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${getSiteUrl()}/diretorio?uf={uf}`,
+    'query-input': 'required name=uf'
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -79,8 +91,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex min-h-screen flex-col">
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
+        <a className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:rounded focus:bg-coral focus:px-3 focus:py-2 focus:text-white" href="#conteudo-principal">
+          Pular para o conteúdo
+        </a>
         <HeaderNav />
-        <main className="mx-auto w-full max-w-6xl flex-1 p-4 pb-20">{children}</main>
+        <main className="flex-1" id="conteudo-principal">{children}</main>
+        <Footer />
         <CVVBanner />
       </body>
     </html>

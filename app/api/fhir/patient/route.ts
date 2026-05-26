@@ -1,5 +1,8 @@
 import type { Patient } from '@medplum/fhirtypes';
 import { ensureMedplumAuth, medplumClient } from '@/lib/medplum/client';
+
+export const runtime = 'edge';
+
 import { fromFhirPatient, toFhirPatient } from '@/lib/medplum/patient';
 import { AuthError, requirePapel } from '@/lib/supabase/server';
 import type { LocalPatient } from '@/types/fhir';

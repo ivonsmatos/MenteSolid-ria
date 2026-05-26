@@ -6,6 +6,9 @@ import {
   getSupabaseServer,
   requirePapel
 } from '@/lib/supabase/server';
+
+export const runtime = 'edge';
+
 import { atualizarTriagemSchema } from '@/lib/validators';
 
 type RouteParams = { params: Promise<{ id: string }> };

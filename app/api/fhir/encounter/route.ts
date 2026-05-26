@@ -1,5 +1,8 @@
 import type { Encounter, Observation } from '@medplum/fhirtypes';
 import { ensureMedplumAuth, medplumClient } from '@/lib/medplum/client';
+
+export const runtime = 'edge';
+
 import { toFhirEncounter, toFhirObservations } from '@/lib/medplum/encounter';
 import { AuthError, requirePapel } from '@/lib/supabase/server';
 import type { LocalTriagem } from '@/types/fhir';

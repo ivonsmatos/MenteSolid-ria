@@ -38,8 +38,8 @@ export function LoginForm() {
 
   if (enviado) {
     return (
-      <div className="rounded bg-white p-6 shadow">
-        <h2 className="text-lg font-semibold text-emerald-700">Link enviado!</h2>
+      <div className="card">
+        <h2 className="text-lg font-semibold text-mint-700">Link enviado!</h2>
         <p className="mt-2 text-slate-700">
           Verifique a caixa de entrada de <strong>{email}</strong> para entrar.
         </p>
@@ -48,12 +48,12 @@ export function LoginForm() {
   }
 
   return (
-    <form className="space-y-4 rounded bg-white p-6 shadow" onSubmit={onSubmit}>
+    <form className="card space-y-4" onSubmit={onSubmit}>
       <div>
         <label className="mb-1 block font-medium" htmlFor="email-login">E-mail</label>
         <input
           autoComplete="email"
-          className="w-full rounded border p-2"
+          className="w-full rounded-full border border-mint-200 px-4 py-3 outline-none focus:border-coral focus:ring-2 focus:ring-coral/30"
           id="email-login"
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -61,12 +61,8 @@ export function LoginForm() {
           value={email}
         />
       </div>
-      {erro ? <p className="text-sm text-red-600">{erro}</p> : null}
-      <button
-        className="rounded bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-60"
-        disabled={enviando}
-        type="submit"
-      >
+      {erro ? <p className="text-sm text-coral-500">{erro}</p> : null}
+      <button className="btn-primary w-full" disabled={enviando} type="submit">
         {enviando ? 'Enviando...' : 'Receber link de acesso'}
       </button>
       <p className="text-sm text-slate-600">

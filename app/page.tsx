@@ -1,12 +1,19 @@
-import Link from 'next/link';
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Heart, MessageCircle, ShieldCheck, Sparkles, Stethoscope, Users } from 'lucide-react';
+import { Hero } from '@/components/Hero';
+import { SecaoBeneficios } from '@/components/SecaoBeneficios';
+import { CTAFinal } from '@/components/CTAFinal';
 import { JsonLd } from '@/components/JsonLd';
-import { SITE_NAME, SITE_TAGLINE, getSiteUrl } from '@/lib/seo';
+import { IMG } from '@/lib/imagens';
+import { SITE_NAME, SITE_TAGLINE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} — Saúde mental gratuita`,
+  title: `${SITE_NAME} — Saúde mental gratuita no Brasil`,
   description: SITE_TAGLINE,
-  alternates: { canonical: '/' }
+  alternates: { canonical: '/' },
+  openGraph: { title: `${SITE_NAME} — Saúde mental gratuita`, type: 'website' }
 };
 
 const faqJsonLd = {
@@ -16,70 +23,124 @@ const faqJsonLd = {
     {
       '@type': 'Question',
       name: 'O MenteSolidária é gratuito?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Sim. O acolhimento e o encaminhamento a profissionais voluntários são 100% gratuitos para o paciente.'
-      }
+      acceptedAnswer: { '@type': 'Answer', text: 'Sim. O acolhimento e o encaminhamento a profissionais voluntários são 100% gratuitos para o paciente.' }
     },
     {
       '@type': 'Question',
       name: 'Como solicitar atendimento?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Acesse /cadastro-paciente, preencha o formulário e aceite o termo LGPD. Você entra na fila de acolhimento de profissionais voluntários.'
-      }
+      acceptedAnswer: { '@type': 'Answer', text: 'Acesse /acolhimento e converse com nossa IA, ou preencha o formulário em /cadastro-paciente aceitando o termo LGPD.' }
     },
     {
       '@type': 'Question',
       name: 'Onde encontro ajuda em situação de risco?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'O CVV — Centro de Valorização da Vida atende 24h gratuitamente pelo telefone 188.'
-      }
+      acceptedAnswer: { '@type': 'Answer', text: 'O CVV — Centro de Valorização da Vida — atende 24h gratuitamente pelo telefone 188.' }
     }
   ]
 };
 
 export default function HomePage() {
   return (
-    <section className="space-y-6">
+    <>
       <JsonLd data={faqJsonLd} />
-      <h1 className="text-3xl font-bold text-slate-900">
-        Plataforma de acolhimento em saúde mental gratuita
-      </h1>
-      <p className="max-w-3xl text-slate-700">
-        O {SITE_NAME} conecta pessoas em vulnerabilidade a profissionais voluntários por meio de
-        triagem estruturada e encaminhamento humanizado. Atendemos em todo o Brasil, com respeito
-        à LGPD e canal de emergência (CVV 188) sempre acessível.
-      </p>
-      <div className="grid gap-4 md:grid-cols-2">
-        <Link className="rounded-lg bg-blue-600 p-6 text-white shadow hover:shadow-md" href="/acolhimento">
-          <h2 className="text-xl font-semibold">Quero conversar agora</h2>
-          <p className="mt-2 text-blue-100">
-            Comece o acolhimento por IA, sem cadastro. Em minutos, organizamos seu caso para
-            um profissional voluntário entrar em contato.
-          </p>
-        </Link>
-        <Link className="rounded-lg bg-white p-6 shadow hover:shadow-md" href="/cadastro-paciente">
-          <h2 className="text-xl font-semibold">Prefiro um formulário simples</h2>
-          <p className="mt-2 text-slate-600">
-            Pulei a conversa. Apenas registro meus dados para entrar na fila.
-          </p>
-        </Link>
-      </div>
-      <div className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-700">
-        <p>
-          Sou profissional voluntário? <Link className="text-blue-700 underline" href="/login">Entrar</Link>.
-        </p>
-        <p className="mt-1">
-          Procuro um CAPS ou clínica-escola perto de mim:{' '}
-          <Link className="text-blue-700 underline" href="/diretorio">Consultar diretório</Link>.
-        </p>
-      </div>
-      <p className="text-sm text-slate-500">
-        Conheça também a{' '}
-        <Link className="underline" href="/politica-lgpd">política de privacidade</Link>.
-      </p>
-    </section>
+
+      <Hero
+        chapeu="Acolhimento gratuito"
+        ctas={[
+          { href: '/acolhimento', label: 'Conversar agora' },
+          { href: '/para-pacientes', label: 'Sou paciente', variante: 'secondary' }
+        ]}
+        imagem="heroAcolhimento"
+        subtitulo={`O ${SITE_NAME} conecta pessoas em vulnerabilidade a profissionais voluntários de saúde mental no Brasil. Sem custo, sem julgamento, com CVV 188 sempre visível.`}
+        titulo="Você não precisa carregar isso sozinho(a)."
+        tom="mint"
+      />
+
+      {/* Triagem de público — três rotas claras */}
+      <section className="container-page py-16">
+        <header className="mx-auto max-w-3xl text-center">
+          <span className="chip">Por onde começar</span>
+          <h2 className="mt-3 text-3xl font-bold text-slate-900">Escolha o caminho que faz sentido pra você</h2>
+        </header>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <article className="card flex flex-col">
+            <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-mint-200 text-mint-700">
+              <MessageCircle className="h-6 w-6" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-900">Quero conversar</h3>
+            <p className="mt-2 flex-1 text-slate-700">
+              Acolhimento inicial com IA, sem cadastro. Em minutos, organizamos seu caso para um humano.
+            </p>
+            <Link className="btn-primary mt-4 self-start" href="/acolhimento">Começar acolhimento</Link>
+          </article>
+
+          <article className="card flex flex-col">
+            <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-sun-200 text-coral">
+              <Stethoscope className="h-6 w-6" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-900">Sou profissional</h3>
+            <p className="mt-2 flex-1 text-slate-700">
+              Receba casos triados, gerencie pela agenda Cal.com e emita certificado de horas voluntárias.
+            </p>
+            <Link className="btn-secondary mt-4 self-start" href="/para-profissionais">Quero ser voluntário</Link>
+          </article>
+
+          <article className="card flex flex-col">
+            <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-leaf-100 text-leaf-600">
+              <Users className="h-6 w-6" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-900">Procuro serviço perto</h3>
+            <p className="mt-2 flex-1 text-slate-700">
+              CAPS, clínicas-escola e outros serviços públicos por UF, com telefones e fontes oficiais.
+            </p>
+            <Link className="btn-sunny mt-4 self-start" href="/diretorio">Ver diretório</Link>
+          </article>
+        </div>
+      </section>
+
+      {/* Bloco de imagem narrativa */}
+      <section className="bg-mint-100 py-16">
+        <div className="container-page grid gap-10 md:grid-cols-2 md:items-center">
+          <figure className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-soft">
+            <Image
+              alt={IMG.conversaCalma.alt}
+              className="object-cover"
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              src={IMG.conversaCalma.url}
+            />
+          </figure>
+          <div className="space-y-4">
+            <span className="chip">A diferença que faz</span>
+            <h2 className="text-3xl font-bold text-slate-900">A IA escuta. O humano cuida.</h2>
+            <p className="text-lg text-slate-700">
+              Nosso acolhedor por IA foi desenhado por psicólogos: faz perguntas gentis, organiza o
+              caso e <strong>nunca emite diagnóstico</strong>. Quem assume o atendimento de verdade
+              é um(a) profissional voluntário(a) com CRP ou CRM ativo.
+            </p>
+            <Link className="btn-secondary" href="/como-funciona">Ver passo a passo</Link>
+          </div>
+        </div>
+      </section>
+
+      <SecaoBeneficios
+        chapeu="Por que confiar"
+        itens={[
+          { icone: <ShieldCheck className="h-6 w-6" />, titulo: 'CVV 188 sempre à mão', texto: 'Canal de emergência destacado em toda página, em camadas determinísticas.' },
+          { icone: <Sparkles className="h-6 w-6" />, titulo: 'LGPD e auditoria', texto: 'Consentimento versionado, IP e timestamp, trilha completa em audit log.' },
+          { icone: <Heart className="h-6 w-6" />, titulo: 'Gratuito de verdade', texto: 'Nenhum custo, taxa ou “tier” para o paciente social. Pra sempre.' }
+        ]}
+        subtitulo="Cada decisão técnica foi tomada pensando primeiro em quem está vulnerável."
+        titulo="Salvaguardas em todas as camadas"
+      />
+
+      <CTAFinal
+        ctaPrimario={{ href: '/acolhimento', label: 'Quero conversar agora' }}
+        ctaSecundario={{ href: '/contato', label: 'Quero apoiar' }}
+        texto="Sem cadastro inicial. Seus dados só são gravados depois do aceite LGPD explícito."
+        titulo="Dar o primeiro passo é mais leve do que parece."
+        tom="coral"
+      />
+    </>
   );
 }

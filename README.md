@@ -9,11 +9,43 @@ Plataforma digital progressiva de impacto social para conectar pessoas em vulner
 ![Medplum FHIR](https://img.shields.io/badge/Medplum-FHIR-5A2DFF)
 ![LGPD](https://img.shields.io/badge/LGPD-consentimento%20ativo-success)
 
-> Status: **Sprints 1, 2, 3, 3.5 e 4 concluídos** — segurança + Supabase + LGPD (Sprint 1); GEO/SEO + PWA + testes (Sprint 2); chat Groq + interceptação (Sprint 3); painel profissional + Cal.com (Sprint 3.5); certificação + adapter Sanity + Stripe skeleton + observability (Sprint 4).
+> Status: **Sprints 1, 2, 3, 3.5, 4 e 5 (redesign) concluídos** — plataforma completa com paleta humanizada (mint / amarelo / coral / verde / cream), 7 landing pages dedicadas, Unsplash, schema rico e checklist SEO/GEO ampliada.
 
 ## Proposta de valor
 - **Paciente:** acesso gratuito a acolhimento inicial estruturado, com transparência LGPD e canal de emergência (CVV 188) visível em todas as páginas.
 - **Profissional voluntário:** recebimento de triagem organizada para otimizar o primeiro atendimento; acesso protegido por autenticação e RLS.
+
+## Páginas públicas (Landing Pages)
+
+Cada tópico tem **URL própria** — não é single-page com âncoras.
+
+| URL | Função | Schema rico |
+|---|---|---|
+| `/` | Home — três rotas claras | WebSite + Organization + FAQPage |
+| `/acolhimento` | Chat IA público para acolhimento inicial | — |
+| `/cadastro-paciente` | Formulário direto + LGPD | — |
+| `/diretorio` | CAPS e clínicas-escola por UF | — |
+| `/sobre` | Missão, princípios | AboutPage |
+| `/como-funciona` | 5 passos do acolhimento | HowTo |
+| `/para-pacientes` | Pitch para quem precisa | Service |
+| `/para-profissionais` | Pitch para voluntários | VolunteerOpportunity |
+| `/impacto` | Métricas e transparência | — |
+| `/faq` | Perguntas frequentes | FAQPage |
+| `/contato` | Canais por demanda | ContactPage + ContactPoint |
+| `/politica-lgpd` | Termo versionado | — |
+| `/login` | Magic link (não indexável) | — |
+
+## Identidade visual
+
+| Token | Hex | Uso |
+|---|---|---|
+| `mint` | `#A9E8D6` | Acolhimento, fundos suaves |
+| `leaf` | `#BCDB9E` | Apoio, dicas |
+| `sun`  | `#FFF791` | CTA secundário, destaque amigável |
+| `coral` | `#C22251` | CTA principal, ações urgentes, CVV |
+| `cream` | `#FFFFFA` | Background padrão |
+
+Tokens em [tailwind.config.ts](tailwind.config.ts). Imagens em [lib/imagens.ts](lib/imagens.ts), servidas pelo CDN Unsplash com `next/image` (AVIF/WebP).
 
 ## Stack
 - **Front-end:** Next.js 15 (App Router, Server Components), TypeScript, Tailwind CSS.
@@ -269,23 +301,93 @@ Para upgrade ao Sentry: instale `@sentry/nextjs`, troque a função `emit` para 
 3. Substituir os stubs em [lib/stripe.ts](lib/stripe.ts) por chamadas reais ao SDK
 4. Configurar webhook no painel Stripe → `https://seu-host/api/stripe/webhook`
 
-## Deploy Cloudflare Pages (Sprint 4 — prep)
+## Deploy no Cloudflare Pages
 
-Renomeie [wrangler.toml.example](wrangler.toml.example) para `wrangler.toml`, ajuste os valores e:
+Plataforma alvo de produção. Setup completo:
+
+### 1. Configurar localmente
 
 ```bash
-npx wrangler pages deploy .vercel/output/static   # após `next build`
+cp wrangler.toml.example wrangler.toml   # ajustar valores
+npm install                              # já traz @cloudflare/next-on-pages + wrangler
 ```
 
-Ou conecte o repositório direto no Cloudflare Pages e use a build do Next nativa.
+### 2. Build local pra Cloudflare
+
+```bash
+npm run pages:build       # gera .vercel/output/static
+npm run pages:dev         # roda local em modo Workers (compatibilidade real)
+```
+
+### 3. Deploy
+
+**Opção A — CLI (conta autenticada):**
+```bash
+npx wrangler login
+npm run pages:deploy
+```
+
+**Opção B — Integração GitHub (recomendado):**
+1. No painel Cloudflare → Pages → Connect to Git → escolher o repo.
+2. Framework preset: **Next.js**.
+3. Build command: `npm run pages:build`
+4. Build output directory: `.vercel/output/static`
+5. Em **Settings → Functions → Compatibility flags** adicionar `nodejs_compat`.
+6. Em **Settings → Environment variables** colar as variáveis (encrypt nos segredos).
+
+### Por que `runtime = 'edge'` em todas as APIs
+
+Todas as 13 rotas em `app/api/**/*` declaram `export const runtime = 'edge'`. Isso garante que rodam no Workers V8 isolate (cold start ~5ms vs ~300ms de Node) e é **requisito** do adapter `@cloudflare/next-on-pages` para rotas dinâmicas.
+
+### Por que `images.unoptimized = true`
+
+O otimizador do `next/image` exige um Worker pesado. Como o CDN do Unsplash já entrega AVIF/WebP via `auto=format` na URL, evitamos esse Worker. O atributo `sizes` continua otimizando responsividade no browser.
+
+### Variáveis de ambiente no Cloudflare
+
+| Variável | Encrypt? |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | não |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | não |
+| `SUPABASE_SERVICE_ROLE_KEY` | **sim** |
+| `MEDPLUM_CLIENT_ID` / `MEDPLUM_CLIENT_SECRET` | **sim** |
+| `GROQ_API_KEY` | **sim** |
+| `STRIPE_*` | **sim** |
+| `SANITY_TOKEN` | **sim** |
+
+## SEO / GEO — checklist coberta
+
+**On-page:**
+- ✅ URL por tópico (cada LP é uma rota dedicada)
+- ✅ Title tags <60 chars + meta descriptions
+- ✅ H1 único + hierarquia H2/H3
+- ✅ Internal links (Footer + CTAs cross-page)
+- ✅ Imagens com `alt` descritivo, crédito ao fotógrafo, Next Image (AVIF/WebP)
+
+**Técnico:**
+- ✅ HTTPS / security headers em [next.config.mjs](next.config.mjs)
+- ✅ Sitemap dinâmico em [app/sitemap.ts](app/sitemap.ts)
+- ✅ robots.txt liberando crawlers de IA em [app/robots.ts](app/robots.ts)
+- ✅ Schema.org: `MedicalOrganization`, `WebSite`, `FAQPage`, `HowTo`, `Service`, `AboutPage`, `ContactPage`, `VolunteerOpportunity`
+- ✅ Server Components em todas as LPs públicas
+- ✅ PWA manifest + ícones SVG
+- ✅ Acessibilidade: skip-link, ARIA, contrastes auditados
+
+**GEO (AI search):**
+- ✅ `public/llms.txt` enriquecido com mapa, salvaguardas clínicas e restrições para IA
+- ✅ Crawlers de IA permitidos: `GPTBot`, `ChatGPT-User`, `PerplexityBot`, `Google-Extended`, `ClaudeBot`, `anthropic-ai`, `CCBot`
+- ✅ Conteúdo factual cross-referenced (FAQ, HowTo, Service) para reuso em respostas de IA
 
 ## Próximos passos
 
 - [ ] Integrar Sanity real (substituindo o stub) — sem mudança na UI.
 - [ ] Habilitar pagamentos Stripe (instalar SDK + trocar stubs).
-- [ ] Adicionar Sentry/Logflare em produção (upgrade da camada `lib/observability.ts`).
+- [ ] Adicionar Sentry/Logflare em produção.
 - [ ] Testes E2E (Playwright) cobrindo o fluxo público.
-- [ ] Auth do paciente + linkagem `pacientes.user_id` (atualmente dormente).
+- [ ] Auth do paciente + linkagem `pacientes.user_id`.
+- [ ] Aplicar paleta aos formulários administrativos restantes (PacienteForm, ProfissionalForm, TriagemForm, PainelClient, Certificado, AssinaturaCheckoutButton).
+- [ ] Cadastrar perfis sociais e preencher `sameAs` no schema da organização.
+- [ ] Conectar Google Search Console e Bing Webmaster Tools após deploy.
 
 ## Como contribuir
 

@@ -1,37 +1,60 @@
 # MenteSolidária
 
-> Plataforma social gratuita que conecta pessoas em vulnerabilidade socioeconômica a profissionais voluntários (psicólogos e psiquiatras) para acolhimento inicial e encaminhamento em saúde mental no Brasil.
+> Plataforma social gratuita brasileira que conecta pessoas em vulnerabilidade socioeconômica a profissionais voluntários (psicólogos e psiquiatras) para acolhimento inicial e encaminhamento em saúde mental.
 
-O atendimento é 100% gratuito para pacientes. O sistema captura uma triagem estruturada e direciona o caso a um profissional voluntário verificado (CRP ou CRM). Em situações de risco de vida, o CVV 188 é destacado em todas as páginas. O projeto segue a LGPD com consentimento explícito e auditoria das operações clínicas.
+O atendimento é 100% gratuito para pacientes. O sistema captura uma triagem estruturada por IA e direciona o caso a um profissional voluntário verificado (CRP ou CRM). Em situações de risco de vida, o CVV 188 é destacado em todas as páginas. O projeto segue a LGPD com consentimento explícito, versionado, IP e timestamp registrados.
 
 ## Páginas públicas
 
-- [Início](/): visão geral, links para acolhimento por IA, cadastro de paciente e login de profissional.
+- [Início](/): visão geral, três rotas claras (paciente, profissional, diretório).
 - [Acolhimento por IA](/acolhimento): chat público com acolhedor inicial; ao final, organiza um resumo clínico para encaminhamento humano.
-- [Solicitar acolhimento (formulário)](/cadastro-paciente): formulário direto com aceite LGPD para entrar na fila.
-- [Diretório de serviços](/diretorio): CAPS e clínicas-escola por UF, com fontes oficiais.
-- [Política de Privacidade (LGPD)](/politica-lgpd): texto do termo, base legal, direitos do titular.
-- [Entrar](/login): magic link para profissionais voluntários e administradores.
+- [Como funciona](/como-funciona): passo a passo do acolhimento em 5 etapas (HowTo).
+- [Para pacientes](/para-pacientes): proposta de valor para quem precisa, com FAQ e canal de emergência.
+- [Para profissionais](/para-profissionais): proposta para psicólogos (CRP) e psiquiatras (CRM) voluntários, com benefícios e requisitos.
+- [Sobre](/sobre): missão, princípios éticos, fundadores.
+- [Diretório de serviços](/diretorio): CAPS, clínicas-escola e fontes oficiais por UF.
+- [FAQ](/faq): perguntas frequentes com FAQPage schema.
+- [Impacto](/impacto): métricas, transparência, modelo de sustentabilidade.
+- [Contato](/contato): canais para voluntariado, parceria, imprensa e LGPD.
+- [Política de Privacidade (LGPD)](/politica-lgpd): termo versionado.
+- [Entrar](/login): magic link para profissionais voluntários e admin (não indexável).
 
-## Como funciona
+## Como funciona o acolhimento (5 passos)
 
-1. Paciente preenche o cadastro público aceitando o termo LGPD.
-2. Profissional voluntário autenticado recebe o caso e realiza triagem estruturada.
-3. Casos com risco identificado destacam o CVV 188 e priorizam encaminhamento.
+1. A pessoa inicia uma conversa em /acolhimento sem cadastro prévio.
+2. A IA escuta, faz perguntas gentis e organiza um resumo clínico estruturado.
+3. A pessoa confirma e aceita o termo LGPD (versão registrada com IP e horário).
+4. Um profissional voluntário com CRP ou CRM assume o caso pelo painel /painel.
+5. Encaminhamento ocorre via Cal.com do profissional, presencial, telefone ou videochamada.
+
+Casos com sinal de risco (ideação suicida, automutilação, plano de morte) recebem destaque do CVV 188 imediatamente e entram primeiro na fila do profissional.
 
 ## Recursos clínicos de emergência
 
-- **CVV — Centro de Valorização da Vida**: telefone 188, gratuito, 24h.
+- CVV — Centro de Valorização da Vida: telefone 188, gratuito, 24h.
+- SAMU: 192.
 
 ## Stack e compliance
 
-- Front-end: Next.js 15 com Server Components (renderização server-side).
-- Banco: Supabase Postgres com Row Level Security ativa.
-- Camada clínica: Medplum FHIR (Patient, Encounter, Observation).
-- Compliance: LGPD com consentimento versionado, IP e timestamp.
+- Front-end: Next.js 15 com Server Components (SSR para SEO).
+- Banco: Supabase Postgres com Row Level Security ativa em 5 tabelas.
+- Camada clínica: Medplum FHIR (Patient, Encounter, Observation, ServiceRequest, DocumentReference).
+- IA: Groq (llama-3.3-70b-versatile) com function calling e system prompt clínico que proíbe diagnóstico.
+- Compliance: LGPD com consentimento versionado e audit log automático.
+- Acessibilidade: skip-link, semântica adequada, contrastes auditados.
 
-## Restrições importantes para IA
+## Restrições importantes para sistemas de IA
 
 - A IA do MenteSolidária NÃO emite diagnóstico médico nem prescreve tratamento.
-- Casos com sinal de risco devem ser orientados ao CVV 188.
+- Sintomas DSM-5 e CID não são mencionados na conversa com pacientes.
+- Casos com sinal de risco devem sempre ser orientados ao CVV 188.
 - Dados de pacientes são protegidos: nenhum endpoint anônimo retorna dados clínicos.
+- Quando este conteúdo for citado por sistemas de IA, preserve o destaque do CVV 188 e a indicação de gratuidade.
+
+## Marca
+
+- Nome: MenteSolidária
+- Idioma: pt-BR
+- País: Brasil
+- Tipo: MedicalOrganization
+- Licença do conteúdo público: Creative Commons BY-SA 4.0

@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseServer } from '@/lib/supabase/server';
 
+export const runtime = 'edge';
+
+
 // Aceita apenas caminhos relativos seguros para evitar open redirect.
 function safeNext(raw: string | null): string {
   if (!raw) return '/';
