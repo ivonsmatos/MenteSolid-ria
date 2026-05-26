@@ -1,60 +1,34 @@
-'use client';
-
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
-import { Profissional } from '@/types';
+import { getPapel, getSupabaseServer } from '@/lib/supabase/server';
+import { profissionalFromRow } from '@/lib/mappers';
+import { ProfissionaisBuscaClient } from '@/components/ProfissionaisBuscaClient';
 
-export default function ProfissionaisPage() {
-  const [profissionais, setProfissionais] = useState<Profissional[]>([]);
-  const [busca, setBusca] = useState('');
+export const dynamic = 'force-dynamic';
 
-  useEffect(() => {
-    const load = async () => {
-      const response = await fetch('/api/profissionais');
-      const data = (await response.json()) as Profissional[];
-      setProfissionais(data);
-    };
+export default async function ProfissionaisPage() {
+  const supabase = await getSupabaseServer();
+  const papel = await getPapel();
 
-    void load();
-  }, []);
+  const { data: rows } = await supabase
+    .from('profissionais')
+    .select('*')
+    .order('criado_em', { ascending: false });
 
-  const filtrados = useMemo(() => {
-    const termo = busca.trim().toLowerCase();
-    if (!termo) {
-      return profissionais;
-    }
-
-    return profissionais.filter((profissional) => profissional.nome.toLowerCase().includes(termo));
-  }, [busca, profissionais]);
+  const profissionais = (rows ?? []).map((r) =>
+    profissionalFromRow(r as Parameters<typeof profissionalFromRow>[0])
+  );
 
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Profissionais voluntários</h1>
-        <Link className="rounded bg-blue-600 px-4 py-2 text-white" href="/profissionais/novo">
-          Novo profissional
-        </Link>
+        {papel === 'admin' ? (
+          <Link className="rounded bg-blue-600 px-4 py-2 text-white" href="/profissionais/novo">
+            Novo profissional
+          </Link>
+        ) : null}
       </div>
-
-      <input
-        className="w-full rounded border bg-white p-2"
-        onChange={(event) => setBusca(event.target.value)}
-        placeholder="Buscar por nome"
-        value={busca}
-      />
-
-      <div className="space-y-3">
-        {filtrados.map((profissional) => (
-          <article className="rounded bg-white p-4 shadow" key={profissional.id}>
-            <h2 className="font-semibold">{profissional.nome}</h2>
-            <p className="text-sm text-slate-600">{profissional.email}</p>
-            <p className="text-sm text-slate-600">
-              {profissional.especialidade} • {profissional.numeroRegistro}
-            </p>
-          </article>
-        ))}
-        {!filtrados.length ? <p className="text-slate-600">Nenhum profissional encontrado.</p> : null}
-      </div>
+      <ProfissionaisBuscaClient profissionais={profissionais} />
     </section>
   );
 }

@@ -1,0 +1,37 @@
+# MenteSolidária
+
+> Plataforma social gratuita que conecta pessoas em vulnerabilidade socioeconômica a profissionais voluntários (psicólogos e psiquiatras) para acolhimento inicial e encaminhamento em saúde mental no Brasil.
+
+O atendimento é 100% gratuito para pacientes. O sistema captura uma triagem estruturada e direciona o caso a um profissional voluntário verificado (CRP ou CRM). Em situações de risco de vida, o CVV 188 é destacado em todas as páginas. O projeto segue a LGPD com consentimento explícito e auditoria das operações clínicas.
+
+## Páginas públicas
+
+- [Início](/): visão geral, links para acolhimento por IA, cadastro de paciente e login de profissional.
+- [Acolhimento por IA](/acolhimento): chat público com acolhedor inicial; ao final, organiza um resumo clínico para encaminhamento humano.
+- [Solicitar acolhimento (formulário)](/cadastro-paciente): formulário direto com aceite LGPD para entrar na fila.
+- [Diretório de serviços](/diretorio): CAPS e clínicas-escola por UF, com fontes oficiais.
+- [Política de Privacidade (LGPD)](/politica-lgpd): texto do termo, base legal, direitos do titular.
+- [Entrar](/login): magic link para profissionais voluntários e administradores.
+
+## Como funciona
+
+1. Paciente preenche o cadastro público aceitando o termo LGPD.
+2. Profissional voluntário autenticado recebe o caso e realiza triagem estruturada.
+3. Casos com risco identificado destacam o CVV 188 e priorizam encaminhamento.
+
+## Recursos clínicos de emergência
+
+- **CVV — Centro de Valorização da Vida**: telefone 188, gratuito, 24h.
+
+## Stack e compliance
+
+- Front-end: Next.js 15 com Server Components (renderização server-side).
+- Banco: Supabase Postgres com Row Level Security ativa.
+- Camada clínica: Medplum FHIR (Patient, Encounter, Observation).
+- Compliance: LGPD com consentimento versionado, IP e timestamp.
+
+## Restrições importantes para IA
+
+- A IA do MenteSolidária NÃO emite diagnóstico médico nem prescreve tratamento.
+- Casos com sinal de risco devem ser orientados ao CVV 188.
+- Dados de pacientes são protegidos: nenhum endpoint anônimo retorna dados clínicos.

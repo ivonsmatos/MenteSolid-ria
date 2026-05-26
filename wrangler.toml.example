@@ -1,0 +1,15 @@
+# Renomeie para wrangler.toml e ajuste com seus valores reais.
+# Em seguida: `npx wrangler pages deploy .vercel/output/static` (após `next build`)
+# ou use a integração GitHub do Cloudflare Pages.
+
+name = "mentesolidaria"
+compatibility_date = "2026-05-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Pages Functions inferidas automaticamente do output do Next no Cloudflare.
+# Defina as variáveis sensíveis no painel Cloudflare → Settings → Environment variables.
+
+[vars]
+NEXT_PUBLIC_APP_URL = "https://mentesolidaria.example"
+DIRETORIO_PROVIDER = "json"
+GROQ_MODEL = "llama-3.3-70b-versatile"

@@ -1,0 +1,70 @@
+{
+  "fontes": [
+    {
+      "nome": "Mapa Saúde Mental",
+      "url": "https://mapasaudemental.com.br/",
+      "descricao": "Diretório nacional de serviços gratuitos e baixo custo."
+    },
+    {
+      "nome": "CAPS — Localizador do Ministério da Saúde",
+      "url": "https://www.gov.br/saude/pt-br/composicao/saes/dahu/saude-mental",
+      "descricao": "Lista oficial de Centros de Atenção Psicossocial."
+    }
+  ],
+  "servicos": [
+    {
+      "id": "caps-sp-se",
+      "nome": "CAPS Adulto Sé",
+      "tipo": "CAPS",
+      "cidade": "São Paulo",
+      "uf": "SP",
+      "publico": "adulto",
+      "telefone": "(11) 3331-9466"
+    },
+    {
+      "id": "ce-ip-usp",
+      "nome": "Clínica-Escola IP-USP",
+      "tipo": "Clínica-Escola",
+      "cidade": "São Paulo",
+      "uf": "SP",
+      "publico": "adulto e infanto-juvenil",
+      "telefone": "(11) 3091-4173"
+    },
+    {
+      "id": "caps-rj-tijuca",
+      "nome": "CAPS III Tijuca",
+      "tipo": "CAPS",
+      "cidade": "Rio de Janeiro",
+      "uf": "RJ",
+      "publico": "adulto",
+      "telefone": "(21) 2208-3211"
+    },
+    {
+      "id": "ce-uerj",
+      "nome": "Clínica-Escola UERJ",
+      "tipo": "Clínica-Escola",
+      "cidade": "Rio de Janeiro",
+      "uf": "RJ",
+      "publico": "adulto",
+      "telefone": "(21) 2334-0590"
+    },
+    {
+      "id": "caps-df-pb",
+      "nome": "CAPS Adulto Planaltina",
+      "tipo": "CAPS",
+      "cidade": "Brasília",
+      "uf": "DF",
+      "publico": "adulto",
+      "telefone": "(61) 3389-6055"
+    },
+    {
+      "id": "caps-mg-bh",
+      "nome": "CAPS Pampulha",
+      "tipo": "CAPS",
+      "cidade": "Belo Horizonte",
+      "uf": "MG",
+      "publico": "adulto",
+      "telefone": "(31) 3277-4866"
+    }
+  ]
+}

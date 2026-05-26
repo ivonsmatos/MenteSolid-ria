@@ -1,16 +1,22 @@
 {
   "name": "mentesolidaria",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@medplum/core": "^5.1.13",
     "@medplum/fhirtypes": "^5.1.13",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.45.4",
     "autoprefixer": "^10.4.19",
     "clsx": "^2.1.1",
     "lucide-react": "^0.378.0",
@@ -29,6 +35,9 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.8",
-    "typescript": "^5"
+    "eslint": "^8.57.0",
+    "eslint-config-next": "15.5.18",
+    "typescript": "^5",
+    "vitest": "^2.1.4"
   }
 }

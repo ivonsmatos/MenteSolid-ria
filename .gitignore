@@ -3,3 +3,11 @@ node_modules
 out
 npm-debug.log*
 .DS_Store
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Dev-only local DB (não enviar dados reais)
+data/db.json

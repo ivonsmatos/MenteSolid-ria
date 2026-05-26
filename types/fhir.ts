@@ -15,7 +15,7 @@ export interface LocalPatient {
   email?: Paciente['email'];
   telefone?: Paciente['telefone'];
   cidade?: Paciente['cidade'];
-  estado?: Paciente['estado'];
+  uf?: Paciente['uf'];
   dataNascimento?: Paciente['dataNascimento'];
   genero?: Paciente['genero'];
   comoChegou?: Paciente['comoChegou'];
