@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { Hero } from '@/components/Hero';
 import { JsonLd } from '@/components/JsonLd';
@@ -63,7 +64,9 @@ export default function ContatoPage() {
               </Link>
             </div>
           </div>
-          <ContatoForm />
+          <Suspense fallback={<p className="text-slate-500">Carregando formulário…</p>}>
+            <ContatoForm />
+          </Suspense>
         </div>
       </section>
     </>

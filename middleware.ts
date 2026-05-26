@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 const ROTAS_PUBLICAS = [
   '/',
@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(toSet: { name: string; value: string; options: Record<string, unknown> }[]) {
+        setAll(toSet: { name: string; value: string; options: CookieOptions }[]) {
           toSet.forEach(({ name, value, options }) => {
             response.cookies.set({ name, value, ...options });
           });
