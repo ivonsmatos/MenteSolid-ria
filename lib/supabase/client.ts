@@ -2,8 +2,7 @@
 
 import { createBrowserClient } from '@supabase/ssr';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type DB = any;
+type DB = any; // TODO: substituir por Database importado de @/types/database.ts
 
 export function getSupabaseBrowser() {
   return createBrowserClient<DB>(

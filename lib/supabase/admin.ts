@@ -4,8 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 // Tipo Database genérico (`any`) porque ainda não geramos os tipos a partir
 // do schema com `supabase gen types`. Quando gerar, trocar por `<Database>`
 // importado de `@/types/database.ts`.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type DB = any;
+type DB = any; // TODO: substituir por Database importado de @/types/database.ts
 
 let cached: ReturnType<typeof createClient<DB>> | null = null;
 
