@@ -69,7 +69,7 @@ describe('pacienteFromRow', () => {
   });
 
   it('inclui triagem quando passada', () => {
-    const p = pacienteFromRow(pacienteRow, triagemFromRow(triagemRow));
+    const p = pacienteFromRow(pacienteRow, triagemRow);
     expect(p.triagem?.motivoDaBusca).toBe('Ansiedade');
   });
 });
