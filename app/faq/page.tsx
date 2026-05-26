@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Hero } from '@/components/Hero';
 import { JsonLd } from '@/components/JsonLd';
-import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Perguntas frequentes — FAQ',
@@ -88,8 +87,3 @@ export default function FaqPage() {
     </>
   );
 }
-
-export const dynamic = 'force-static';
-
-// canonical URL exportado para uso em outras paginas (cross-link)
-export const FAQ_URL = absoluteUrl('/faq');
